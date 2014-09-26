@@ -1,7 +1,9 @@
 library("rebird")
 library("dplyr")
 library("httr")
+library("twitteR")
 
+source("keys.R")
 source("fun.R")
 
 crd <- ebirdnotable(region = "CA-BC-CP", regtype = "subnational2", back = 2, 
