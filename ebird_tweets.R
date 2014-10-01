@@ -37,8 +37,6 @@ if (nrow(crd) > 0) {
   
   lapply(tweets, tweet)
   
-  
-  
   save(old_tweets, file = "/Users/ateucher/dev/crd_rare_bird_bot/old_tweets.rda")
   
 }
