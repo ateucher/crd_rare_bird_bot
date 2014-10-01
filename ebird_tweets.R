@@ -15,7 +15,8 @@ if (nrow(crd) > 0) {
   crd <- crd %>%
     mutate(url = paste0("http://ebird.org/ebird/view/checklist?subID=", subID), 
            short_url = sapply(url, shorten, token = BitlyToken, 
-                              USE.NAMES = FALSE)) 
+                              USE.NAMES = FALSE)) %>%
+    arrange(obsDt)
   
   tweets <- with(crd, paste0(howMany, " ", comName, " on ", obsDt, " at ", locName,  
                              ifelse(!obsReviewed, " (provisional). ", ". "), 
