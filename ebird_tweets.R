@@ -4,6 +4,7 @@ library("httr")
 library("twitteR")
 library("methods") # Required for use with RScript
 
+# need full path for use in shell script
 source("/Users/ateucher/dev/crd_rare_bird_bot/keys.R")
 source("/Users/ateucher/dev/crd_rare_bird_bot/fun.R")
 
