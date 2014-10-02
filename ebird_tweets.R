@@ -19,7 +19,7 @@ if (nrow(crd) > 0) {
     arrange(obsDt)
   
   tweets <- with(crd, paste0(howMany, " ", comName, " on ", obsDt, " at ", locName,  
-                             ifelse(!obsReviewed, " (provisional). ", ". "), 
+                             ifelse(!obsReviewed, " (UNCONFIRMED). ", " (CONFIRMED). "), 
                              short_url))
   
   ## Don't duplicate
