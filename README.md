@@ -1,4 +1,4 @@
-CRD Rare bird alert Twitter Bot
+CRD Rare Bird Alert Twitter Bot
 =================
 
 Fetches recent rare bird sightings submitted to [eBird](http://www.ebird.org) 
@@ -9,5 +9,4 @@ the [ropensci](http://ropensci.org/) R package
 The sightings are then tweeted from the [CRD Rare Bird Bot](https://twitter.com/crd_rare_bird) twitter account using the R package 
 [twitteR](https://github.com/geoffjentry/twitteR).
 
-This is automatically run three times a day, which I figured out following the 
-tutorial [here](http://ricardianambivalence.com/2013/03/13/scheduling-tasks-with-macs-launchd-moving-on-from-cron/).
+This is automatically run several times a day using a shell script and the Mac utility launchd. [This](http://ricardianambivalence.com/2013/03/13/scheduling-tasks-with-macs-launchd-moving-on-from-cron/) tutorial was helpful figuring out launchd, which I had never used before.

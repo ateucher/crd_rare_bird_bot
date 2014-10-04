@@ -8,7 +8,7 @@ library("methods") # Required for use with RScript
 source("/Users/ateucher/dev/crd_rare_bird_bot/keys.R")
 source("/Users/ateucher/dev/crd_rare_bird_bot/fun.R")
 
-crd <- ebirdnotable(region = "CA-BC-CP", regtype = "subnational2", back = 2, 
+crd <- ebirdnotable(region = "CA-BC-CP", regtype = "subnational2", back = 3, 
                     provisional = TRUE, hotspot = FALSE, simple = FALSE)
  
 if (nrow(crd) > 0) {
