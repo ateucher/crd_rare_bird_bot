@@ -12,3 +12,12 @@ shorten <- function(url, token) {
   
   short_url
 }
+
+get_month_qt <- function(date) {
+  # month <- months(date)
+  day <- lubridate::day(date)
+  dys <- lubridate::days_in_month(date)
+  bins <- seq(from = 1, to = dys, length = 5)
+  qt <- cut(day, bins, labels = 1:4, include.lowest = TRUE)
+  as.integer(qt)
+}
