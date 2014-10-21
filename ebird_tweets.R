@@ -18,7 +18,8 @@ if (nrow(crd) > 0) {
                               USE.NAMES = FALSE)) %>%
     arrange(obsDt)
   
-  tweets <- with(crd, paste0(howMany, " ", comName, " on ", obsDt, " at ", locName,  
+  tweets <- with(crd, paste0(ifelse(is.na(howMany), "", paste0(howMany, " ")), 
+                             comName, " on ", obsDt, " at ", locName,  
                              ifelse(!obsReviewed, " (UNCONFIRMED). ", " (CONFIRMED). "), 
                              short_url))
   
