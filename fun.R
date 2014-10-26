@@ -1,3 +1,5 @@
+library("httr")
+
 shorten <- function(url, token) {
   stop_for_status(GET(url))
   
@@ -20,4 +22,20 @@ get_month_qt <- function(date) {
   bins <- seq(from = 1, to = dys, length = 5)
   qt <- cut(day, bins, labels = 1:4, include.lowest = TRUE)
   paste(month, as.integer(qt), sep = "-")
+}
+
+get_freq <- function(loctype, loc, startyear, endyear, startmonth, endmonth) {
+  args <- list(cmd = "getChart", displayType = "download", getLocations = loctype, 
+               counties = loc, bYear = startyear, eYear = endyear, 
+               bMonth = startmonth, eMonth = endmonth)
+  
+  url <- "http://ebird.org/ebird/canada/BarChart"
+  ret <- GET(url, query = args)
+  stop_for_status(ret)
+  asChar <- readBin(ret$content, "character")
+  freq <- read.delim(textConnection(asChar), skip = 12, 
+                     stringsAsFactors = FALSE)[-1,-50]
+  names(freq) <- c("Species", sapply(month.name, paste ,1:4, sep="-"))
+  freq_long <- gather(freq, "mo_qt", "Freq", 2:length(freq), convert = TRUE)
+  freq_long
 }
