@@ -1,5 +1,4 @@
 library("lubridate")
-library("tidyr")
 library("rebird")
 
 source("fun.R")

@@ -1,4 +1,5 @@
 library("httr")
+library("tidyr")
 
 shorten <- function(url, token) {
   stop_for_status(GET(url))
@@ -33,7 +34,7 @@ get_freq <- function(loctype, loc, startyear, endyear, startmonth, endmonth) {
   ret <- GET(url, query = args)
   stop_for_status(ret)
   asChar <- readBin(ret$content, "character")
-  freq <- read.delim(textConnection(asChar), skip = 12, 
+  freq <- read.delim(text = asChar, skip = 12, 
                      stringsAsFactors = FALSE)[-1,-50]
   names(freq) <- c("Species", sapply(month.name, paste ,1:4, sep="-"))
   freq_long <- gather(freq, "mo_qt", "Freq", 2:length(freq), convert = TRUE)
