@@ -1,5 +1,7 @@
 library("httr")
 library("tidyr")
+library("lubridate")
+library("dplyr")
 
 shorten <- function(url, token) {
   stop_for_status(GET(url))
@@ -37,6 +39,50 @@ get_freq <- function(loctype, loc, startyear, endyear, startmonth, endmonth) {
   freq <- read.delim(text = asChar, skip = 12, 
                      stringsAsFactors = FALSE)[-1,-50]
   names(freq) <- c("Species", sapply(month.name, paste ,1:4, sep="-"))
-  freq_long <- gather(freq, "mo_qt", "Freq", 2:length(freq), convert = TRUE)
+  freq_long <- tidyr::gather(freq, "mo_qt", "Freq", 2:length(freq), 
+                             convert = TRUE)
   freq_long
+}
+
+get_common <- function(freqs, date, prop) {
+  stopifnot(is.numeric(prop), is.data.frame(freqs), is.Date(date))
+  
+  qt <- get_month_qt(date)
+  
+  common_spp <- freq$Species[freq$mo_qt == qt & 
+                 (freq$Freq > prop | 
+                    grepl("sp\\.$", freq$Species))]
+}
+
+get_full_checklists <- function(locations){
+  
+  n_locs <- length(locations)
+  cuts <- seq(1, n_locs, by = 10)
+  if (max(cuts) < n_locs) cuts <- c(cuts, n_locs)
+  
+  locs <- lapply(seq_along(cuts), function(i) {
+    if (i == length(cuts)) {
+      ids <- locations[n_locs]
+    } else {
+      ids <- locations[cuts[i]:(cuts[i+1]-1)]
+    }
+    ebirdloc(ids, back = 3, provisional = TRUE, sleep = 2, simple = FALSE)
+  })
+  dplyr::bind_rows(locs)
+}
+
+make_tweets <- function(bird_df, bitly_token) {
+  bird_df <- mutate(bird_df, 
+                    url = paste0("http://ebird.org/ebird/view/checklist?subID=", 
+                                 subID), 
+                    short_url = sapply(url, shorten, token = bitly_token, 
+                                       USE.NAMES = FALSE))
+  bird_df <- arrange(bird_df, obsDt)
+  
+  tweets <- with(bird_df, paste0(howMany, " ", comName, " on ", obsDt, " at ", 
+                                 locName, ifelse(!obsReviewed, 
+                                                 " (UNCONFIRMED). ", 
+                                                 " (CONFIRMED). "), 
+                                 short_url))
+  tweets
 }

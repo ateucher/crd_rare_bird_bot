@@ -8,19 +8,12 @@ library("methods") # Required for use with RScript
 source("/Users/ateucher/dev/crd_rare_bird_bot/keys.R")
 source("/Users/ateucher/dev/crd_rare_bird_bot/fun.R")
 
+## Use process_freq_hist here instead of this call:
 crd <- ebirdnotable(region = "CA-BC-CP", regtype = "subnational2", back = 3, 
                     provisional = TRUE, hotspot = FALSE, simple = FALSE)
  
 if (nrow(crd) > 0) {
-  crd <- crd %>%
-    mutate(url = paste0("http://ebird.org/ebird/view/checklist?subID=", subID), 
-           short_url = sapply(url, shorten, token = BitlyToken, 
-                              USE.NAMES = FALSE)) %>%
-    arrange(obsDt)
-  
-  tweets <- with(crd, paste0(howMany, " ", comName, " on ", obsDt, " at ", locName,  
-                             ifelse(!obsReviewed, " (UNCONFIRMED). ", " (CONFIRMED). "), 
-                             short_url))
+  tweets <- make_tweets(crd, BitlyToken)
   
   ## Don't duplicate
   if (file.exists("/Users/ateucher/dev/crd_rare_bird_bot/old_tweets.rda")) {
