@@ -45,13 +45,14 @@ get_freq <- function(loctype, loc, startyear, endyear, startmonth, endmonth) {
 }
 
 get_common <- function(freqs, date, prop) {
+  ## This also removes spuhs and sp1/sp2 birds (eg. Barrows/Common Goldeneye)
   stopifnot(is.numeric(prop), is.data.frame(freqs), is.Date(date))
   
   qt <- get_month_qt(date)
   
   common_spp <- freq$Species[freq$mo_qt == qt & 
                  (freq$Freq > prop | 
-                    grepl("sp\\.$", freq$Species))]
+                    grepl("sp\\.$|/", freq$Species))]
 }
 
 get_full_checklists <- function(locations){
@@ -86,3 +87,4 @@ make_tweets <- function(bird_df, bitly_token) {
                                  short_url))
   tweets
 }
+
