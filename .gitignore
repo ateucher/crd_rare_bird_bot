@@ -1,12 +1,10 @@
 # History files
 .Rhistory
-
 # R data files from past sessions
 .Rdata
 .Rproj.user
-
 # Contains API keys
 keys.R
-
 old_tweets.rda
 log.txt
+.httr-oauth
