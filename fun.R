@@ -79,7 +79,8 @@ make_tweets <- function(bird_df, bitly_token) {
                     short_url = sapply(url, shorten, token = bitly_token, 
                                        USE.NAMES = FALSE))
   bird_df <- arrange(bird_df, obsDt)
-  bird_df$conf <- ifelse(!bird_df$obsReviewed, " (UNCONFIRMED). ", " (CONFIRMED). ")
+  bird_df$conf <- ifelse(bird_df$obsReviewed & bird_df$obsValid, " (CONFIRMED). ", 
+                         ifelse(!bird_df$obsValid, " (UNCONFIRMED). ", ". "))
   bird_df$locName[bird_df$locationPrivate] <- "a private location"
   
   tweets <- with(bird_df, paste0(howMany, " ", comName, " on ", obsDt, " at ", 
