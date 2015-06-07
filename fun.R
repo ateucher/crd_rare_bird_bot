@@ -2,7 +2,6 @@ library("httr")
 library("tidyr")
 library("lubridate")
 library("dplyr")
-options("httr_oauth_cache" = TRUE)
 
 shorten <- function(url, token) {
   stop_for_status(GET(url))

@@ -3,6 +3,7 @@ library("dplyr")
 library("httr")
 library("twitteR")
 library("methods") # Required for use with RScript
+options("httr_oauth_cache" = TRUE)
 
 # need full path for use in shell script
 source("/Users/ateucher/dev/crd_rare_bird_bot/keys.R")
