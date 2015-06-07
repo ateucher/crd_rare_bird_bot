@@ -10,3 +10,12 @@ The sightings are then tweeted from the [CRD Rare Bird Bot](https://twitter.com/
 [twitteR](https://github.com/geoffjentry/twitteR).
 
 This is automatically run several times a day using a shell script and the Mac utility launchd. [This](http://ricardianambivalence.com/2013/03/13/scheduling-tasks-with-macs-launchd-moving-on-from-cron/) tutorial was helpful figuring out launchd, which I had never used before.
+
+#### Note: You will need the development version of [rebird](https://github.com/ropensci/rebird) to use this.
+
+To install, use the [devtools](https://github.com/hadley/devtools) package:
+
+```r
+install.packages("devtools")
+devtools::install_github("ropensci/rebird")
+```
