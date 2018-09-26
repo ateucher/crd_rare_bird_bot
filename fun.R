@@ -27,33 +27,16 @@ get_month_qt <- function(date) {
   paste(month, as.integer(qt), sep = "-")
 }
 
-get_freq <- function(loctype, loc, startyear, endyear, startmonth, endmonth) {
-  args <- list(cmd = "getChart", displayType = "download", getLocations = loctype, 
-               counties = loc, bYear = startyear, eYear = endyear, 
-               bMonth = startmonth, eMonth = endmonth)
-  
-  url <- "http://ebird.org/ebird/canada/BarChart"
-  ret <- GET(url, query = args)
-  stop_for_status(ret)
-  asChar <- readBin(ret$content, "character")
-  freq <- read.delim(text = asChar, skip = 12, 
-                     stringsAsFactors = FALSE)[-1,-50]
-  names(freq) <- c("Species", vapply(month.name, paste, FUN.VALUE = character(4), 
-                                     1:4, sep="-"))
-  freq_long <- tidyr::gather(freq, "mo_qt", "Freq", 2:length(freq), 
-                             convert = TRUE)
-  freq_long
-}
-
 get_common <- function(freqs, date, prop) {
   ## This also removes spuhs and sp1/sp2 birds (eg. Barrows/Common Goldeneye)
   stopifnot(is.numeric(prop), is.data.frame(freqs), is.Date(date))
   
   qt <- get_month_qt(date)
   
-  common_spp <- freq$Species[freq$mo_qt == qt & 
-                 (freq$Freq > prop | 
-                    grepl("sp\\.$|/", freq$Species))]
+  common_spp <- freqs$comName[freqs$monthQt == qt & 
+                                (freqs$frequency > prop | 
+                                   grepl("sp\\.$|/", freqs$comName))]
+  common_spp
 }
 
 get_full_checklists <- function(locations){
@@ -68,7 +51,7 @@ get_full_checklists <- function(locations){
     } else {
       ids <- locations[cuts[i]:(cuts[i+1]-1)]
     }
-    ebirdloc(ids, back = 3, provisional = TRUE, sleep = 2, simple = FALSE)
+    ebirdregion(ids, back = 3, provisional = TRUE, sleep = 2, simple = FALSE)
   })
   dplyr::bind_rows(locs)
 }
@@ -76,7 +59,7 @@ get_full_checklists <- function(locations){
 make_tweets <- function(bird_df, bitly_token) {
   bird_df <- mutate(bird_df, 
                     url = paste0("http://ebird.org/ebird/view/checklist?subID=", 
-                                 subID), 
+                                 subId), 
                     short_url = vapply(url, shorten, FUN.VALUE = character(1), 
                                        token = bitly_token, USE.NAMES = FALSE))
   bird_df <- arrange(bird_df, obsDt)
@@ -93,4 +76,3 @@ make_tweets <- function(bird_df, bitly_token) {
                                  locName, conf, short_url))
   tweets
 }
-
