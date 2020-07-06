@@ -15,7 +15,9 @@ last_year <- as.integer(format(Sys.Date(), "%Y")) - 1
 freq <- ebirdfreq("counties", "CA-BC-CP", 1990, last_year, 1, 12)
 
 # Get a list of common birds for the current quarter of the month
-common_now <- get_common(freq, Sys.Date(), 0.01)
+# 2020-07-06 Add AMCR to common birds (low historical rates) due to recent
+# lump with NOCR
+common_now <- c(get_common(freq, Sys.Date(), 0.01), "American Crow")
 
 # Get all the bird sightings for the region
 crd_birds <- ebirdregion(loc = "CA-BC-CP", back = 3, 
