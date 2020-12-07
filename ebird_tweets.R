@@ -12,7 +12,8 @@ source(file.path(homedir, "github/crd_rare_bird_bot/fun.R"))
 
 last_year <- as.integer(format(Sys.Date(), "%Y")) - 1
 
-freq <- ebirdfreq("counties", "CA-BC-CP", 1990, last_year, 1, 12)
+# freq <- ebirdfreq("counties", "CA-BC-CP", 1990, last_year, 1, 12)
+freq <- format_frequency_table("ebird_CA-BC-CP__1900_2019_1_12_barchart.txt")
 
 # Get a list of common birds for the current quarter of the month
 # 2020-07-06 Add AMCR to common birds (low historical rates) due to recent

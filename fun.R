@@ -27,6 +27,23 @@ get_month_qt <- function(date) {
   paste(month, as.integer(qt), sep = "-")
 }
 
+format_frequency_table <- function(file) {
+  freq <- read.delim(file, 
+             stringsAsFactors = FALSE, 
+             skip = 12L)[,-50]
+  
+  names(freq) <- c("comName", vapply(month.name, paste, FUN.VALUE = character(4), 
+                                     1:4, sep = "-"))
+  
+  freq_long <- reshape(data.frame(freq[-1, ]), varying = 2:49, direction = "long", 
+                       v.names = "frequency", idvar = "comName", 
+                       timevar = "monthQt", times = names(freq)[2:49])
+  ss <- data.frame(sampleSize = unlist(freq[1, -1]))
+  ss$monthQt <- rownames(ss)
+  freq <- left_join(freq_long, ss, by = "monthQt")
+  freq
+}
+
 get_common <- function(freqs, date, prop) {
   ## This also removes spuhs and sp1/sp2 birds (eg. Barrows/Common Goldeneye)
   stopifnot(is.numeric(prop), is.data.frame(freqs), is.Date(date))
