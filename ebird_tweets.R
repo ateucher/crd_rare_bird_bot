@@ -10,8 +10,8 @@ homedir <- Sys.getenv("HOME")
 # need full path for use in shell script
 source(file.path(homedir, "github/crd_rare_bird_bot/fun.R"))
 
-last_year <- as.integer(format(Sys.Date(), "%Y")) - 1
-
+# ebird_freq is broken so use manually downloaded frequency chart.
+# last_year <- as.integer(format(Sys.Date(), "%Y")) - 1
 # freq <- ebirdfreq("counties", "CA-BC-CP", 1990, last_year, 1, 12)
 freq <- format_frequency_table("ebird_CA-BC-CP__1900_2019_1_12_barchart.txt")
 
